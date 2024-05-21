@@ -1,0 +1,10 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    :root {
+        --headers-height: calc(96px + 42px + 2px);
+        --screen-minus-headers: calc(100vh - var(--headers-height));
+    }
+}
