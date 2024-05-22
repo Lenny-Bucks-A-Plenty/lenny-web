@@ -36,11 +36,12 @@ import { useStore } from "@/stores";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import StockTickerSection from "@/components/stock-ticker-section";
-import { cn, toMoneyString, toPercentString } from "@/lib/utils";
+import { cn, toMoneyString, toPercentString, useModalState } from "@/lib/utils";
 import { Card, CardContent } from "@/components/ui/card";
 import { montserrat, robotoMono } from "@/fonts";
 import StockPickerCard from "@/components/stock-picker-card";
 import ColoredPercent from "@/components/colored-percent";
+import NewPortfolioModal from "@/components/new-portfolio-modal";
 
 const stocks = [
   {'ticker': 'MMM', 'name': '3M Company', 'current_price': 105.21, 'percent_diff': -0.05},
@@ -161,6 +162,8 @@ export default function Home() {
 
   const [selectedStock, setSelectedStock] = React.useState<string>();
 
+  const newPortfolioModalState = useModalState();
+
   React.useEffect(() => {
     setStockData(stocks);
 
@@ -206,7 +209,13 @@ export default function Home() {
               Portfolios
             </span>
             {portfolios.length > 0 && selectedPortfolio && (
-              <Select defaultValue={selectedPortfolio.id}>
+              <Select 
+                defaultValue={selectedPortfolio.id} 
+                onValueChange={(portfolioId) => {
+                  selectPortfolio(portfolioId); 
+                  setSelectedStock(undefined)
+                }}
+              >
                 <SelectTrigger className="w-[200px] mt-1 h-8">
                   <SelectValue placeholder="Select portfolio" />
                 </SelectTrigger>
@@ -223,7 +232,7 @@ export default function Home() {
 
                   <SelectGroup>
                     <Button 
-                      onClick={() => {{}}}
+                      onClick={() => newPortfolioModalState.set("open")}
                       variant={"ghost"} 
                       size={'sm'} 
                       className="w-full justify-start"
@@ -281,8 +290,16 @@ export default function Home() {
                   </span>
                 </Button>
               </PopoverTrigger>
-              <PopoverContent sideOffset={-42} className="w-full p-0">
-                <Command>
+              <PopoverContent sideOffset={-42} className="w-full max-w-[270px] p-0">
+                <Command
+                  filter={(value, search, keywords = []) => {
+                    const extendValue = value + " " + keywords.join(" ");
+                    if (extendValue.toLowerCase().includes(search.toLowerCase())) {
+                      return 1;
+                    }
+                    return 0;
+                  }}
+                >
                   <CommandInput placeholder="Select a stock..." />
                   <CommandList>
                     <CommandEmpty>Stock not found.</CommandEmpty>
@@ -291,6 +308,7 @@ export default function Home() {
                         <CommandItem
                           key={stock.ticker}
                           value={stock.ticker}
+                          keywords={[stock.name]}
                           onSelect={(ticker) => {
                             addStockPick(selectedPortfolio!.id, ticker)
                             setOpen(false)
@@ -361,37 +379,7 @@ export default function Home() {
       </div>
 
 
-      {/* <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#2e026d] to-[#15162c]">
-        <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16 ">
-          <h1 className="text-5xl font-extrabold tracking-tight text-white sm:text-[5rem]">
-            Create <span className="text-[hsl(280,100%,70%)]">T3</span> App
-          </h1>
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-8">
-            <Link
-              className="flex max-w-xs flex-col gap-4 rounded-xl bg-white/10 p-4 text-white hover:bg-white/20"
-              href="https://create.t3.gg/en/usage/first-steps"
-              target="_blank"
-            >
-              <h3 className="text-2xl font-bold">First Steps →</h3>
-              <div className="text-lg">
-                Just the basics - Everything you need to know to set up your
-                database and authentication.
-              </div>
-            </Link>
-            <Link
-              className="flex max-w-xs flex-col gap-4 rounded-xl bg-white/10 p-4 text-white hover:bg-white/20"
-              href="https://create.t3.gg/en/introduction"
-              target="_blank"
-            >
-              <h3 className="text-2xl font-bold">Documentation →</h3>
-              <div className="text-lg">
-                Learn more about Create T3 App, the libraries it uses, and how
-                to deploy it.
-              </div>
-            </Link>
-          </div>
-        </div>
-      </main> */}
+      <NewPortfolioModal state={newPortfolioModalState} />
     </TooltipProvider>
   );
 }

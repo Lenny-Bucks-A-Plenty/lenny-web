@@ -1,3 +1,4 @@
+import React from "react";
 import { type ClassValue, clsx } from "clsx"
 import { twMerge } from "tailwind-merge"
 
@@ -21,3 +22,12 @@ export function toPercentString(percent: number, specific: boolean = false): str
   // if (percent > 0.0) {
   return `+${percent.toFixed(2)}%`;
 }
+
+type TModalState = "open" | "closed"
+
+export const useModalState = () => {
+	const [state, setState] = React.useState<TModalState>("closed");
+	return { state, set: setState } as const;
+}
+
+export type ModalState = ReturnType<typeof useModalState>
