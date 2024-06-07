@@ -29,7 +29,7 @@ type State = {
   getStockById: (stockId: string) => StockPick;
 }
 
-export const useStore = create<State>()(
+export const usePortfolios = create<State>()(
   persist((set, get) => ({
     portfolios: [
       { id: '1', title: 'Personal', stocks: [] }
@@ -60,6 +60,10 @@ export const useStore = create<State>()(
       set({
         portfolios: get().portfolios.filter((p) => p.id !== portfolioId)
       })
+
+      if (get().selectedPortfolio?.id === portfolioId) {
+        get().selectPortfolio(get().portfolios.at(0)!.id)
+      }
     },
 
     selectedPortfolio: null,

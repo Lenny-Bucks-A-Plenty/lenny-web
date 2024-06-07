@@ -1,7 +1,7 @@
 import React from "react";
 import { PlusCircleIcon } from "lucide-react";
 import { ModalState } from "@/lib/utils"
-import { useStore } from "@/stores";
+import { usePortfolios } from "@/stores/portfolio";
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from "./ui/dialog";
 import { Label } from "./ui/label";
 import { Input } from "./ui/input";
@@ -16,7 +16,7 @@ export default function NewPortfolioModal({
 }: Props) {
 
   const [title, setTitle] = React.useState<string>("");
-  const { createPortfolio } = useStore();
+  const { createPortfolio } = usePortfolios();
 
   function onCreate() {
     if (title.trim().length !== 0) {
