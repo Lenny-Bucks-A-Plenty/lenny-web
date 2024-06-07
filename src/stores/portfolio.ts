@@ -36,12 +36,15 @@ export const usePortfolios = create<State>()(
     ],
 
     createPortfolio(title) {
+      const newPortfolioId = uuidv4();
       set({
         portfolios: [
           ...get().portfolios, 
-          { id: uuidv4(), title: title, stocks: [] }
+          { id: newPortfolioId, title: title, stocks: [] }
         ]
       })
+
+      get().selectPortfolio(newPortfolioId)
     },
 
     duplicatePortfolio(portfolioId) {
