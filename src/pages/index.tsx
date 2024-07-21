@@ -9,7 +9,7 @@ import {
   QueryClient,
   QueryClientProvider,
 } from '@tanstack/react-query';
-import { Check, ChevronsUpDown, CircleHelpIcon, PlusCircleIcon, SearchIcon, Trash2Icon } from "lucide-react";
+import { Check, ChevronsUpDown, CircleHelpIcon, Loader2, PlusCircleIcon, SearchIcon, Trash2Icon } from "lucide-react";
 import {
   Select,
   SelectContent,
@@ -403,10 +403,22 @@ export default function Home() {
               <div className="border-t">
                 <div className="flex flex-col pl-14 pr-10 pt-8 pb-14">
                   <span className="mb-1 text-xl font-semibold">Lenny's Take on {selectedStock}</span>
-                  {/* <p className="text-sm">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. At lectus urna duis convallis convallis tellus id interdum. Nulla facilisi nullam vehicula ipsum a arcu cursus vitae. Dolor purus non enim praesent elementum facilisis leo. Ligula ullamcorper malesuada proin libero nunc consequat interdum varius sit. Donec enim diam vulputate ut pharetra sit amet.
-                  </p> */}
-                  {stockTakeQuery.data && (
+                  {stockTakeQuery.isFetching && (
+                    <div className="mt-6 h-60 grid grid-cols-3 gap-x-8">
+                      <div className={"h-24 flex items-center justify-center border-8 border-double border-gray-300 font-bold text-4xl text-gray-400"}>
+                        SELL
+                      </div>
+
+                      <div className={"h-24 flex items-center justify-center border-8 border-double border-gray-300 font-bold text-4xl text-gray-400"}>
+                        WAIT
+                      </div>
+
+                      <div className={"h-24 flex items-center justify-center border-8 border-double border-gray-300 font-bold text-4xl text-gray-400"}>
+                        BUY
+                      </div>
+                    </div>
+                  )}
+                  {!stockTakeQuery.isFetching && stockTakeQuery.data && (
                     <div className="mt-6 h-60 grid grid-cols-3 gap-x-8">
                       <div className={cn(
                         "h-24 flex items-center justify-center border-8 border-double border-gray-300 font-bold text-4xl text-gray-400",
