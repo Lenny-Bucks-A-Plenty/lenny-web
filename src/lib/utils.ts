@@ -16,7 +16,7 @@ export function toMoneyString(amount: number, withoutSymbol = false): string {
   else return res;
 }
 
-export function toPercentString(percent: number, specific: boolean = false): string {
+export function toPercentString(percent: number, specific = false): string {
   if (!specific || percent <= 0.0) return `${percent.toFixed(2)}%`;
 
   // if (percent > 0.0) {

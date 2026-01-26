@@ -1,15 +1,10 @@
 import React from "react";
 import { type AppType } from "next/app";
-import { Inter } from "next/font/google";
+import { lexend, jetbrainsMono } from "@/fonts";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 import "@/styles/globals.css";
 import { TooltipProvider } from "@/components/ui/tooltip";
-
-const inter = Inter({
-  subsets: ["latin"],
-  variable: "--font-sans",
-});
 
 const MyApp: AppType = ({ Component, pageProps }) => {
   const [queryClient] = React.useState(
@@ -28,7 +23,7 @@ const MyApp: AppType = ({ Component, pageProps }) => {
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
-        <main className={`font-sans ${inter.variable}`}>
+        <main className={`${lexend.variable} ${jetbrainsMono.variable} font-sans`}>
           <Component {...pageProps} />
         </main>
       </TooltipProvider>

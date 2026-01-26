@@ -1,19 +1,15 @@
-import { Montserrat, Roboto, Roboto_Mono } from "next/font/google";
+import { Lexend, JetBrains_Mono } from "next/font/google";
 
-export const roboto = Roboto({
-  weight: ['300', '400', '500', '700'],
+export const lexend = Lexend({
+  weight: ['300', '400', '500', '600', '700'],
   style: ['normal'],
   subsets: ['latin'],
+  variable: '--font-lexend',
 });
 
-export const robotoMono = Roboto_Mono({
-  weight: ['200', '300', '400', '500', '600', '700'],
+export const jetbrainsMono = JetBrains_Mono({
+  weight: ['300', '400', '500', '600', '700'],
   style: ['normal'],
-  subsets: ['latin']
-});
-
-export const montserrat = Montserrat({
-  weight: ['300', '400', '500', '600', '700', '800'],
-  style: ['normal'],
-  subsets: ['latin']
+  subsets: ['latin'],
+  variable: '--font-mono',
 });

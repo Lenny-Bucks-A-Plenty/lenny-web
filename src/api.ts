@@ -1,5 +1,5 @@
 import wretch from "wretch";
-import { StockPick } from "./stores/portfolio";
+import type { StockPick } from "./stores/portfolio";
 
 const BASE_URL = 'http://localhost:8000';
 const api = wretch(BASE_URL, { mode: 'cors' });

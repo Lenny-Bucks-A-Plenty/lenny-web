@@ -1,8 +1,8 @@
 import React from "react";
-import { PlusCircleIcon } from "lucide-react";
-import { ModalState } from "@/lib/utils"
+import { PlusCircleIcon, FolderPlusIcon } from "lucide-react";
+import type { ModalState } from "@/lib/utils"
 import { usePortfolios } from "@/stores/portfolio";
-import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from "./ui/dialog";
+import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogDescription } from "./ui/dialog";
 import { Label } from "./ui/label";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
@@ -28,28 +28,51 @@ export default function NewPortfolioModal({
 
   return (
     <Dialog open={state.state === "open" ? true : false} onOpenChange={(open) => !open && state.set("closed")}>
-      <DialogContent>
-        <DialogHeader className="mx-1 pb-4 border-b">
-          <DialogTitle className="text-center text-xl">New Portfolio</DialogTitle>
+      <DialogContent className="sm:max-w-md">
+        <DialogHeader className="pb-4 border-b border-[var(--border)]">
+          <div className="flex items-center gap-3">
+            <div className="flex items-center justify-center w-10 h-10 rounded-xl bg-[var(--accent-soft)] border border-[var(--accent)]/20">
+              <FolderPlusIcon className="w-5 h-5 text-[var(--accent)]" />
+            </div>
+            <div>
+              <DialogTitle className="text-lg">New Portfolio</DialogTitle>
+              <DialogDescription>Create a new portfolio to organize your stock picks.</DialogDescription>
+            </div>
+          </div>
         </DialogHeader>
 
-        <div className="mt-2 w-full grid items-center gap-1.5">
-          <Label htmlFor="title">Title</Label>
-          <Input 
-            type="text" 
-            id="title" 
-            onChange={(e) => setTitle(e.target.value)} 
-            onKeyDown={(e) => {
-              if (e.key === 'Enter') {
-                onCreate()
-              }
-            }}
-          />
+        <div className="mt-4 space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="title">Portfolio Name</Label>
+            <Input 
+              type="text" 
+              id="title"
+              placeholder="e.g., Tech Growth, Dividend Stocks..."
+              value={title}
+              onChange={(e) => setTitle(e.target.value)} 
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  onCreate()
+                }
+              }}
+            />
+          </div>
         </div>
 
-        <DialogFooter className="mt-2">
-          <Button className="w-full" onClick={onCreate}>
-            <PlusCircleIcon className="mr-2 size-4" />
+        <DialogFooter className="mt-6">
+          <Button 
+            variant="secondary" 
+            onClick={() => state.set("closed")}
+            className="flex-1 sm:flex-none"
+          >
+            Cancel
+          </Button>
+          <Button 
+            onClick={onCreate}
+            disabled={title.trim().length === 0}
+            className="flex-1 sm:flex-none"
+          >
+            <PlusCircleIcon className="mr-2 w-4 h-4" />
             Create Portfolio
           </Button>
         </DialogFooter>
